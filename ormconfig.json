@@ -1,0 +1,14 @@
+{
+    "name": "default",
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5432,
+    "username": "hondaao",
+    "password": "aosora207",
+    "database": "typegraph",
+    "synchronize": true,
+    "logging": true,
+    "entities": [
+        "src/entity/*.ts"
+    ]
+ }
