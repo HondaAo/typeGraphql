@@ -1,28 +1,17 @@
 import { ApolloServer } from 'apollo-server-express'
 import  Express from 'express'
-import { buildSchema } from 'type-graphql';
 import { createConnection } from 'typeorm';
 import "reflect-metadata"
-import { RegisterResolver } from './modules/users/Register';
 import session from 'express-session';
 import connectRedis from 'connect-redis'
 import { redis } from './redis';
 import cors from 'cors'
-import { LoginResolver } from './modules/users/Login';
-import { MeResolver } from './modules/users/Me';
-import { ConfirmUserResolver } from './modules/users/confirmUser';
-import { ForgotPasswordResolver } from './modules/users/ForgotPassword';
-import { ProfilePictureResolver } from './modules/users/ProfilePicture';
+import { createSchema } from './utils/createSchema';
 
 const main = async() => {
     await createConnection();
 
-    const schema = await buildSchema({
-        resolvers: [RegisterResolver, LoginResolver, MeResolver, ConfirmUserResolver, ForgotPasswordResolver, ProfilePictureResolver],
-        authChecker: ({ context: { req }}) => {
-          return !!req.session.userId;
-        }
-    });
+    const schema = await createSchema();
     const apolloServer = new ApolloServer({
         schema,
         context: ({ req, res }: any) => ({ req, res })

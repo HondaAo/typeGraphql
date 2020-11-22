@@ -16,7 +16,6 @@ export class ForgotPasswordResolver {
       if(!user){
           return false;
       }
-
       const token = v4();
       redis.set( forgotPasswordPrefix + token, user.id, "ex", 60*60*24);
       await sendEmail(email, `http://localhost:3000/confirm/${token}`)
